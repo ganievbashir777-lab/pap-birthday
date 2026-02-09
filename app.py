@@ -3,9 +3,9 @@ import time
 import datetime
 
 # Настройка страницы
-st.set_page_config(page_title="PAPA_OS v2.0", page_icon="📟", layout="centered")
+st.set_page_config(page_title="Для папы", page_icon="❤️", layout="centered")
 
-# Продвинутый CSS для атмосферы "Матрицы"
+# CSS остается для стиля, но мы сделаем его чуть мягче
 st.markdown("""
 <style>
     .stApp {
@@ -31,88 +31,73 @@ st.markdown("""
         color: #000000 !important;
         box-shadow: 0 0 20px #00ff41;
     }
-    .cursor {
-        display: inline-block;
-        width: 10px;
-        height: 20px;
-        background-color: #00ff41;
-        animation: blink 1s infinite;
-    }
-    @keyframes blink {
-        0% { opacity: 0; }
-        50% { opacity: 1; }
-        100% { opacity: 0; }
-    }
 </style>
 """, unsafe_allow_html=True)
 
-def type_text(text, delay=0.05):
+def type_text(text, delay=0.04):
     placeholder = st.empty()
     displayed_text = ""
     for char in text:
         displayed_text += char
-        placeholder.markdown(f"<p class='terminal-text'>{displayed_text}<span class='cursor'></span></p>", unsafe_allow_html=True)
+        placeholder.markdown(f"<p class='terminal-text'>{displayed_text}</p>", unsafe_allow_html=True)
         time.sleep(delay)
 
 if 'stage' not in st.session_state:
     st.session_state.stage = 'boot'
 
-# 1. Загрузка системы (BOOT)
+# 1. Начало
 if st.session_state.stage == 'boot':
-    st.markdown("<h1 class='terminal-text' style='text-align:center;'>CORE_SYSTEM_V2.0</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='terminal-text' style='text-align:center;'>SYSTEM_START...</h1>", unsafe_allow_html=True)
     st.write("")
-    if st.button("INITIALIZE BOOT SEQUENCE"):
+    if st.button("ОТКРЫТЬ СООБЩЕНИЕ"):
         st.session_state.stage = 'loading'
         st.rerun()
 
-# 2. Имитация взлома
+# 2. Загрузка
 elif st.session_state.stage == 'loading':
-    st.markdown("<p class='terminal-text'>[LOG]: Remote connection established...</p>", unsafe_allow_html=True)
-    time.sleep(0.5)
-    st.markdown("<p class='terminal-text'>[LOG]: Scanning for high-level authority...</p>", unsafe_allow_html=True)
+    st.markdown("<p class='terminal-text'>[ЗАГРУЗКА]: Подключение к базе данных поздравлений...</p>", unsafe_allow_html=True)
     
     progress_bar = st.progress(0)
     for i in range(100):
-        time.sleep(0.03)
+        time.sleep(0.02)
         progress_bar.progress(i + 1)
-        if i == 20: st.write("`[OK] Firewall bypassed`")
-        if i == 50: st.write("`[OK] Root privileges obtained`")
-        if i == 80: st.write("`[OK] Decrypting Birthday_Wishes.exe`")
+        if i == 30: st.write("`[OK] Поиск самых важных слов...`")
+        if i == 70: st.write("`[OK] Формирование пожеланий...`")
     
-    time.sleep(1)
+    time.sleep(0.5)
     st.session_state.stage = 'final'
     st.rerun()
 
-# 3. Финальный экран
+# 3. Человеческое поздравление
 elif st.session_state.stage == 'final':
-    st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ACCESS GRANTED ]</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ДОСТУП РАЗРЕШЕН ]</h1>", unsafe_allow_html=True)
     st.write("---")
     
-    # Расчет времени для Таджикистана (UTC+5)
+    # Время Таджикистана
     tz_tajikistan = datetime.timezone(datetime.timedelta(hours=5))
     current_time = datetime.datetime.now(tz_tajikistan)
     date_string = current_time.strftime("%d.%m.%Y")
     
-    type_text("Поздравление загружено...")
-    time.sleep(0.5)
+    type_text("Сообщение для лучшего папы:")
     
     st.markdown(f"""
-    <div style="border: 2px solid #00ff41; padding: 20px; border-radius: 5px;">
-        <h2 style="color:#00ff41; font-family:Courier New;">REPORT FOR: PAPA_ID</h2>
-        <p style="color:#00ff41; font-family:Courier New;">
-        <b>STATUS:</b> THE_BEST_FATHER_IN_WORLD <br>
-        <b>LOCATION:</b> TAJIKISTAN, KAYRAKKUM <br>
-        <b>DATE:</b> {date_string} <br><br>
-        <b>MESSAGE:</b> <br>
-        Папа, система проанализировала все данные и пришла к выводу:<br>
-        Ты — самый надежный код в моей жизни. <br>
-        Желаю тебе здоровья, которое никогда не выдаст "Error", <br>
-        и счастья, которое будет копироваться бесконечным циклом!
+    <div style="border: 2px solid #00ff41; padding: 25px; border-radius: 10px; background-color: #0a0a0a;">
+        <h2 style="color:#00ff41; font-family:Courier New; text-align:center;">С ДНЕМ РОЖДЕНИЯ!</h2>
+        <p style="color:#00ff41; font-family:Courier New; font-size: 18px;">
+        <b>ОТ КОГО:</b> Твой сын <br>
+        <b>ОТКУДА:</b> Кайраккум <br>
+        <b>ДАТА:</b> {date_string} <br><br>
+        <b>ТЕКСТ:</b> <br>
+        Дорогой папа! <br><br>
+        От всей души поздравляю тебя с днем рождения! <br>
+        Я очень благодарен тебе за твою поддержку, за твои советы и за всё то, что ты для меня делаешь. <br><br>
+        Желаю тебе в первую очередь крепкого здоровья, долгих лет жизни и чтобы каждый твой день был наполнен радостью. Пусть в делах всегда сопутствует удача, а дома всегда будет уют и спокойствие. <br><br>
+        Оставайся всегда таким же сильным и мудрым человеком. Я горжусь тем, что ты мой отец!
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.write("")
-    if st.button("TERMINATE SESSION (EXIT)"):
+    if st.button("ПРОЧИТАНО (ВЫХОД)"):
         st.session_state.stage = 'boot'
         st.rerun()
