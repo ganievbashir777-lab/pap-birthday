@@ -3,8 +3,12 @@ import time
 import datetime
 import random
 
+# --- ВПИШИ СВОЕ ИМЯ ЗДЕСЬ ---
+NAME = "Алишер" # Замени Алишер на свое имя
+# ---------------------------
+
 # Настройка страницы
-st.set_page_config(page_title="PAPA_OS: Restricted Access", page_icon="🔐", layout="centered")
+st.set_page_config(page_title="PAPA_OS: Security Login", page_icon="🔐", layout="centered")
 
 # Дизайн терминала
 st.markdown("""
@@ -37,57 +41,58 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Список поздравлений
+# Список длинных поздравлений
 random_wishes = [
-    "Папа, желаю тебе стального здоровья и бесконечной энергии! Пусть каждый день в Кайраккуме приносит только радость, а все твои планы реализуются на 100%. Ты — наша главная опора!",
-    "С днем рождения! Желаю, чтобы удача всегда была на твоей стороне, а в доме всегда царили мир, тепло и достаток. Пусть каждый новый год жизни будет круче предыдущего!",
-    "Желаю тебе всегда оставаться таким же мудрым и сильным. Пусть сердце будет спокойным, а поводов для гордости за нас — как можно больше. Мы тебя очень любим!",
-    "Пусть твои руки никогда не знают усталости, а глаза всегда светятся от счастья. Желаю тебе благополучия, верных друзей рядом и исполнения самых заветных желаний!",
-    "Самого лучшего отца — с днем рождения! Желаю тебе долгих лет жизни, бодрости духа и чтобы каждый твой совет всегда попадал прямо в цель. Спасибо за всё!"
+    "Дорогой папа, желаю тебе крепкого и несокрушимого здоровья! Пусть энергии хватает на все идеи, а каждый день начинается с бодрости. Ты для нас — пример силы!",
+    "Желаю большого успеха в делах! Пусть любая работа спорится, а трудности отступают перед твоим опытом и мудростью. Благополучия и стабильности тебе!",
+    "Пусть наш дом всегда будет для тебя местом силы и уюта. Мы тебя очень любим и всегда поддержим. Желаю тебе душевного спокойствия и побольше отдыха!",
+    "Желаю только добрых новостей! Пусть рядом всегда будут верные друзья, а жизнь наполняется приятными сюрпризами. Гордимся тобой!",
+    "С днем рождения, лучший отец! Желаю сохранять твою крутую выдержку и уверенность. Пусть каждый год приносит новые цели и силы для их достижения!"
 ]
 
 if 'stage' not in st.session_state:
     st.session_state.stage = 'security_1'
 
-# --- ШАГ 1: ВОПРОС ПРО СЫНА ---
+# --- ШАГ 1: ВОПРОС ПРО ИМЯ СЫНА ---
 if st.session_state.stage == 'security_1':
     st.markdown("<h2 class='terminal-text'>[SECURITY LEVEL 1]</h2>", unsafe_allow_html=True)
     st.write("---")
-    st.markdown("<p class='terminal-text'>КТО НАПИСАЛ ЭТОТ КОД СПЕЦИАЛЬНО ДЛЯ ТЕБЯ?</p>", unsafe_allow_html=True)
-    ans1 = st.text_input("Введите ответ:", placeholder="Подсказка: твой сын")
+    st.markdown(f"<p class='terminal-text'>ВВЕДИТЕ ИМЯ СЫНА ДЛЯ ПОДТВЕРЖДЕНИЯ ДОСТУПА:</p>", unsafe_allow_html=True)
+    ans1 = st.text_input("Username:", key="name_input")
     
-    if st.button("ПРОВЕРИТЬ"):
-        if ans1.lower().strip() in ["сын", "мой сын", "ты", "мой любимый сын"]:
-            st.success("ДОСТУП ЧАСТИЧНО РАЗРЕШЕН...")
+    if st.button("LOGIN"):
+        # Проверяем имя (переводим в нижний регистр, чтобы не было ошибки из-за больших букв)
+        if ans1.lower().strip() == NAME.lower().strip():
+            st.success("ЛИЧНОСТЬ АВТОРА ПОДТВЕРЖДЕНА...")
             time.sleep(1)
             st.session_state.stage = 'security_2'
             st.rerun()
         else:
-            st.error("ОШИБКА: СИСТЕМА НЕ УЗНАЕТ ВАС.")
+            st.error("ОШИБКА: НЕВЕРНОЕ ИМЯ ПОЛЬЗОВАТЕЛЯ.")
 
-# --- ШАГ 2: ШУТОЧНЫЙ ВОПРОС ---
+# --- ШАГ 2: ВОПРОС ПРО СТАТУС ---
 elif st.session_state.stage == 'security_2':
     st.markdown("<h2 class='terminal-text'>[SECURITY LEVEL 2]</h2>", unsafe_allow_html=True)
     st.write("---")
-    st.markdown("<p class='terminal-text'>ВЫБЕРИТЕ СВОЙ ТЕКУЩИЙ СТАТУС:</p>", unsafe_allow_html=True)
-    ans2 = st.radio("", ["Просто человек", "Обычный папа", "САМЫЙ ЛУЧШИЙ ПАПА В МИРЕ"])
+    st.markdown("<p class='terminal-text'>ПОДТВЕРДИТЕ ВАШ СТАТУС В ЭТОЙ СИСТЕМЕ:</p>", unsafe_allow_html=True)
+    ans2 = st.radio("", ["Посторонний", "Гость", "ЛУЧШИЙ ОТЕЦ В МИРЕ"])
     
-    if st.button("ПОДТВЕРДИТЬ СТАТУС"):
-        if ans2 == "САМЫЙ ЛУЧШИЙ ПАПА В МИРЕ":
-            st.success("СТАТУС ПОДТВЕРЖДЕН. ИДЕТ ДЕШИФРОВКА...")
+    if st.button("CONFIRM"):
+        if ans2 == "ЛУЧШИЙ ОТЕЦ В МИРЕ":
+            st.success("ДОСТУП ПОЛНОСТЬЮ РАЗРЕШЕН.")
             time.sleep(1)
             st.session_state.stage = 'mood'
             st.rerun()
         else:
-            st.warning("СИСТЕМА ЗНАЕТ, ЧТО ВЫ СКРОМНИЧАЕТЕ. ПОПРОБУЙТЕ ЕЩЕ РАЗ!")
+            st.warning("ДОСТУП ЗАБЛОКИРОВАН. ВЫБЕРИТЕ ВЕРНЫЙ СТАТУС.")
 
 # --- ШАГ 3: КАЛИБРОВКА СЧАСТЬЯ ---
 elif st.session_state.stage == 'mood':
     st.markdown("<h2 class='terminal-text'>[SYSTEM CALIBRATION]</h2>", unsafe_allow_html=True)
-    st.write("Настройте уровень праздничного настроения:")
+    st.write("Настройте уровень праздничного настроения (0-100%):")
     happiness = st.slider("", 0, 100, 100)
     
-    if st.button("ОТКРЫТЬ ПОЗДРАВЛЕНИЕ"):
+    if st.button("РАСШИФРОВАТЬ ПОЗДРАВЛЕНИЕ"):
         if happiness > 50:
             st.balloons()
         st.session_state.stage = 'final'
@@ -98,7 +103,6 @@ elif st.session_state.stage == 'final':
     st.snow()
     st.markdown("<h1 class='terminal-text' style='text-align:center;'>🎉 ACCESS GRANTED 🎉</h1>", unsafe_allow_html=True)
     
-    # Время для Кайраккума
     tz = datetime.timezone(datetime.timedelta(hours=5))
     date_str = datetime.datetime.now(tz).strftime("%d.%m.%Y")
     
@@ -107,21 +111,21 @@ elif st.session_state.stage == 'final':
 
     st.markdown(f"""
     <div class="wish-card">
-        <h2 style="color:#00ff41; text-align:center; font-family: Courier New;">ОТЧЕТ ДЛЯ ПАПЫ</h2>
+        <h2 style="color:#00ff41; text-align:center; font-family: Courier New;">ОТЧЕТ: ДЕНЬ РОЖДЕНИЯ</h2>
         <p style="color:#00ff41; font-family:Courier New; font-size: 16px;">
-        <b>СТАТУС:</b> ГЛАВНЫЙ ЧЕЛОВЕК <br>
+        <b>ПОЛУЧАТЕЛЬ:</b> ПАПА <br>
         <b>ГОРОД:</b> КАЙРАККУМ <br>
         <b>ДАТА:</b> {date_str} <br>
         -------------------------------------------<br>
-        <b>ТЕКСТ ПОЗДРАВЛЕНИЯ:</b><br>
+        <b>ПОЗДРАВЛЕНИЕ:</b><br>
         {st.session_state.display_wish}<br>
         -------------------------------------------<br><br>
-        <b>ПОДПИСЬ:</b> Твой сын. <br>
-        <i>Код написан на языке Python специально для тебя!</i>
+        <b>АВТОР КОДА:</b> {NAME} <br>
+        <i>Сделано с любовью на Python специально для тебя!</i>
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    if st.button("ПОЛУЧИТЬ НОВОЕ ПОЗДРАВЛЕНИЕ"):
+    if st.button("ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
         st.session_state.display_wish = random.choice(random_wishes)
         st.rerun()
