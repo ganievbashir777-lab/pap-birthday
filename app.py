@@ -1,5 +1,6 @@
 import streamlit as st
 import time
+import datetime
 
 # Настройка страницы
 st.set_page_config(page_title="PAPA_OS v2.0", page_icon="📟", layout="centered")
@@ -30,7 +31,6 @@ st.markdown("""
         color: #000000 !important;
         box-shadow: 0 0 20px #00ff41;
     }
-    /* Анимация мигающего курсора */
     .cursor {
         display: inline-block;
         width: 10px;
@@ -47,7 +47,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 def type_text(text, delay=0.05):
-    """Функция для имитации печати текста"""
     placeholder = st.empty()
     displayed_text = ""
     for char in text:
@@ -89,7 +88,11 @@ elif st.session_state.stage == 'final':
     st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ACCESS GRANTED ]</h1>", unsafe_allow_html=True)
     st.write("---")
     
-    # Сначала печатаем поздравление красиво
+    # Расчет времени для Таджикистана (UTC+5)
+    tz_tajikistan = datetime.timezone(datetime.timedelta(hours=5))
+    current_time = datetime.datetime.now(tz_tajikistan)
+    date_string = current_time.strftime("%d.%m.%Y")
+    
     type_text("Поздравление загружено...")
     time.sleep(0.5)
     
@@ -98,8 +101,8 @@ elif st.session_state.stage == 'final':
         <h2 style="color:#00ff41; font-family:Courier New;">REPORT FOR: PAPA_ID</h2>
         <p style="color:#00ff41; font-family:Courier New;">
         <b>STATUS:</b> THE_BEST_FATHER_IN_WORLD <br>
-        <b>LOCATION:</b> FAMILY_CORE <br>
-        <b>DATE:</b> {time.strftime("%d.%m.%Y")} <br><br>
+        <b>LOCATION:</b> TAJIKISTAN, KAYRAKKUM <br>
+        <b>DATE:</b> {date_string} <br><br>
         <b>MESSAGE:</b> <br>
         Папа, система проанализировала все данные и пришла к выводу:<br>
         Ты — самый надежный код в моей жизни. <br>
