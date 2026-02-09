@@ -6,7 +6,7 @@ import random
 # Настройка страницы
 st.set_page_config(page_title="PAPA_OS ULTRA", page_icon="👑", layout="centered")
 
-# Дизайн терминала с супер-подсветкой
+# Дизайн терминала
 st.markdown("""
 <style>
     .stApp { background-color: #050505; }
@@ -21,6 +21,7 @@ st.markdown("""
         background-color: transparent !important;
         box-shadow: 0 0 10px #00ff41;
         transition: 0.3s;
+        font-family: 'Courier New', Courier, monospace;
     }
     .stButton>button:hover {
         background-color: #00ff41 !important;
@@ -39,11 +40,11 @@ st.markdown("""
 
 # Список поздравлений
 random_wishes = [
-    "Дорогой папа, желаю тебе крепкого здоровья! Пусть энергии хватает на все идеи, а каждый день начинается с бодрости. Ты для нас — пример силы!",
-    "Желаю большого успеха в делах! Пусть любая работа спорится, а трудности отступают перед твоим опытом. Финансового благополучия и стабильности тебе!",
-    "Пусть наш дом всегда будет для тебя местом силы и уюта. Мы тебя очень любим и всегда поддержим. Душевного спокойствия тебе и побольше отдыха!",
-    "Желаю только добрых новостей! Пусть рядом будут верные друзья, а жизнь наполняется приятными сюрпризами. Гордимся тобой!",
-    "С днем рождения! Желаю сохранять твою крутую выдержку и уверенность. Пусть каждый год приносит новые цели и силы для их достижения!"
+    "Дорогой папа, желаю тебе прежде всего крепкого и несокрушимого здоровья! Пусть энергии хватает на все твои идеи, а каждый день начинается с бодрости. Ты для нас — пример силы!",
+    "Желаю большого успеха в делах! Пусть любая работа спорится, а трудности отступают перед твоим опытом и мудростью. Финансового благополучия и стабильности тебе!",
+    "Пусть наш дом всегда будет для тебя местом силы и уюта. Мы тебя очень любим и всегда поддержим. Желаю тебе душевного спокойствия и побольше времени на отдых!",
+    "Желаю только добрых новостей! Пусть рядом всегда будут верные друзья, а жизнь наполняется приятными сюрпризами. Мы очень гордимся тобой и твоими успехами!",
+    "С днем рождения, лучший отец! Желаю сохранять твою крутую выдержку и уверенность. Пусть каждый год приносит новые интересные цели и силы для их достижения!"
 ]
 
 if 'stage' not in st.session_state:
@@ -53,66 +54,71 @@ if 'stage' not in st.session_state:
 if st.session_state.stage == 'security':
     st.markdown("<h2 class='terminal-text'>[SECURITY CHECK]</h2>", unsafe_allow_html=True)
     st.write("---")
+    st.markdown("<p class='terminal-text'>СИСТЕМА ТРЕБУЕТ ПОДТВЕРЖДЕНИЯ:</p>", unsafe_allow_html=True)
     answer = st.radio("КТО ЯВЛЯЕТСЯ ЛУЧШИМ ОТЦОМ В МИРЕ?", ["Не знаю", "Кто-то другой", "МОЙ ПАПА"])
     
-    if st.button("ПОДТВЕРДИТЬ ЛИЧНОСТЬ"):
+    if st.button("ПОДТВЕРДИТЬ ДОСТУП"):
         if answer == "МОЙ ПАПА":
             st.success("ЛИЧНОСТЬ ПОДТВЕРЖДЕНА. ДОСТУП РАЗРЕШЕН.")
             time.sleep(1)
             st.session_state.stage = 'mood'
             st.rerun()
         else:
-            st.error("ОШИБКА ДОСТУПА. ПОПРОБУЙТЕ ЕЩЕ РАЗ.")
+            st.error("ОШИБКА: НЕВЕРНЫЙ ВЫБОР. ПОПРОБУЙТЕ СНОВА.")
 
 # --- ШАГ 2: НАСТРОЙКА ПАРАМЕТРОВ ---
 elif st.session_state.stage == 'mood':
     st.markdown("<h2 class='terminal-text'>[SYSTEM CALIBRATION]</h2>", unsafe_allow_html=True)
-    st.write("Папа, настрой уровень счастья на сегодня:")
+    st.write("Папа, настрой уровень счастья на сегодня (в процентах):")
     happiness = st.slider("", 0, 100, 80)
     
     if st.button("ЗАПУСТИТЬ ПРОГРАММУ ПОЗДРАВЛЕНИЯ"):
         if happiness > 90:
-            st.balloons()
+            st.balloons() # Шарики, если папа очень счастлив
         st.session_state.stage = 'loading'
         st.rerun()
 
 # --- ШАГ 3: ЗАГРУЗКА ---
 elif st.session_state.stage == 'loading':
-    st.markdown("<p class='terminal-text'>[INIT]: Сборка праздничных модулей...</p>", unsafe_allow_html=True)
+    st.markdown("<p class='terminal-text'>[INIT]: Расшифровка секретных данных...</p>", unsafe_allow_html=True)
     bar = st.progress(0)
     for i in range(100):
-        time.sleep(0.02)
+        time.sleep(0.01)
         bar.progress(i+1)
     st.session_state.stage = 'final'
     st.rerun()
 
 # --- ШАГ 4: ФИНАЛ ---
 elif st.session_state.stage == 'final':
-    st.snow() # Эффект звезд/снега
+    st.snow() # Эффект «падающих звезд»
     st.markdown("<h1 class='terminal-text' style='text-align:center;'>🎉 ACCESS GRANTED 🎉</h1>", unsafe_allow_html=True)
     
-    # Музыкальный бонус (эмбед видео с музыкой, можно скрыть или оставить)
-    st.write("🎵 Включи для атмосферы:")
-    st.video("https://www.youtube.com/watch?v=kxopViU98Xo", format="video/mp4", start_time=0)
-
     tz = datetime.timezone(datetime.timedelta(hours=5))
     date_str = datetime.datetime.now(tz).strftime("%d.%m.%Y")
     
+    # Выбираем случайное поздравление
+    if 'display_wish' not in st.session_state:
+        st.session_state.display_wish = random.choice(random_wishes)
+
     st.markdown(f"""
     <div class="wish-card">
-        <h2 style="color:#00ff41; text-align:center;">С ДНЕМ РОЖДЕНИЯ!</h2>
-        <p style="color:#00ff41; font-family:Courier New;">
+        <h2 style="color:#00ff41; text-align:center; font-family: Courier New;">ОТЧЕТ: С ДНЕМ РОЖДЕНИЯ!</h2>
+        <p style="color:#00ff41; font-family:Courier New; font-size: 16px;">
         <b>ОБЪЕКТ:</b> ЛУЧШИЙ ПАПА <br>
         <b>ЛОКАЦИЯ:</b> КАЙРАККУМ <br>
         <b>ДАТА:</b> {date_str} <br>
         -------------------------------------------<br>
-        {random.choice(random_wishes)}<br>
-        -------------------------------------------<br>
-        <b>ОТ КОГО:</b> Твой сын. Я написал этот код, чтобы ты улыбнулся!
+        <b>СООБЩЕНИЕ:</b><br>
+        {st.session_state.display_wish}<br>
+        -------------------------------------------<br><br>
+        <b>ОТ КОГО:</b> Твой сын. <br>
+        <i>Я написал этот код специально для тебя!</i>
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    if st.button("ПОЛУЧИТЬ НОВОЕ ПОЖЕЛАНИЕ"):
+    st.write("")
+    if st.button("ПОЛУЧИТЬ ДРУГОЕ ПОЗДРАВЛЕНИЕ"):
+        st.session_state.display_wish = random.choice(random_wishes)
         st.session_state.stage = 'loading'
         st.rerun()
