@@ -1,99 +1,115 @@
 import streamlit as st
 import time
 
-# Настройка страницы в стиле консоли
-st.set_page_config(page_title="Terminal: Access Granted", page_icon="💻")
+# Настройка страницы
+st.set_page_config(page_title="PAPA_OS v2.0", page_icon="📟", layout="centered")
 
-# Применяем CSS для создания черного фона и зеленого шрифта (как в старых компьютерах)
+# Продвинутый CSS для атмосферы "Матрицы"
 st.markdown("""
 <style>
-    /* Весь фон делаем черным */
     .stApp {
-        background-color: #000000;
+        background-color: #050505;
     }
-    /* Текст делаем ярко-зеленым */
-    p, h1, h2, h3, span, div {
-        color: #00ff00 !important;
-        font-family: 'Courier New', Courier, monospace !important;
+    .terminal-text {
+        color: #00ff41;
+        font-family: 'Courier New', Courier, monospace;
+        text-shadow: 0 0 5px #00ff41;
+        line-height: 1.6;
     }
-    /* Стилизация кнопок под терминал */
     .stButton>button {
-        color: #00ff00 !important;
-        border: 2px solid #00ff00 !important;
-        background-color: #111111 !important;
-        width: 100%;
-        border-radius: 0px;
-        font-weight: bold;
+        color: #00ff41 !important;
+        border: 1px solid #00ff41 !important;
+        background-color: transparent !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.3s;
     }
     .stButton>button:hover {
-        background-color: #00ff00 !important;
+        background-color: #00ff41 !important;
         color: #000000 !important;
+        box-shadow: 0 0 20px #00ff41;
     }
-    /* Скрываем лишние элементы интерфейса Streamlit */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
+    /* Анимация мигающего курсора */
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        height: 20px;
+        background-color: #00ff41;
+        animation: blink 1s infinite;
+    }
+    @keyframes blink {
+        0% { opacity: 0; }
+        50% { opacity: 1; }
+        100% { opacity: 0; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Инициализация состояния программы
-if 'stage' not in st.session_state:
-    st.session_state.stage = 'start'
+def type_text(text, delay=0.05):
+    """Функция для имитации печати текста"""
+    placeholder = st.empty()
+    displayed_text = ""
+    for char in text:
+        displayed_text += char
+        placeholder.markdown(f"<p class='terminal-text'>{displayed_text}<span class='cursor'></span></p>", unsafe_allow_html=True)
+        time.sleep(delay)
 
-# СТРАНИЦА 1: Вход в систему
-if st.session_state.stage == 'start':
-    st.title("> SYSTEM LOGIN")
-    st.write("---")
-    st.write("WARNING: RESTRICTED ACCESS")
-    st.write("ENCRYPTION: AES-256")
-    if st.button("RUN SYSTEM DIAGNOSTIC"):
+if 'stage' not in st.session_state:
+    st.session_state.stage = 'boot'
+
+# 1. Загрузка системы (BOOT)
+if st.session_state.stage == 'boot':
+    st.markdown("<h1 class='terminal-text' style='text-align:center;'>CORE_SYSTEM_V2.0</h1>", unsafe_allow_html=True)
+    st.write("")
+    if st.button("INITIALIZE BOOT SEQUENCE"):
         st.session_state.stage = 'loading'
         st.rerun()
 
-# СТРАНИЦА 2: Процесс "загрузки"
+# 2. Имитация взлома
 elif st.session_state.stage == 'loading':
-    st.title("> LOADING DATA...")
+    st.markdown("<p class='terminal-text'>[LOG]: Remote connection established...</p>", unsafe_allow_html=True)
+    time.sleep(0.5)
+    st.markdown("<p class='terminal-text'>[LOG]: Scanning for high-level authority...</p>", unsafe_allow_html=True)
+    
     progress_bar = st.progress(0)
-    status_text = st.empty()
+    for i in range(100):
+        time.sleep(0.03)
+        progress_bar.progress(i + 1)
+        if i == 20: st.write("`[OK] Firewall bypassed`")
+        if i == 50: st.write("`[OK] Root privileges obtained`")
+        if i == 80: st.write("`[OK] Decrypting Birthday_Wishes.exe`")
     
-    # Имитация логов загрузки
-    logs = [
-        "Initializing core modules...",
-        "Bypassing security layers...",
-        "Accessing personal_records.db...",
-        "Analyzing family_history...",
-        "Filtering results: 'Best Father'...",
-        "MATCH FOUND: [ID_PAPA_001]",
-        "Decrypting message..."
-    ]
-    
-    for i, log in enumerate(logs):
-        status_text.text(f"PROCESSED: {log}")
-        progress_bar.progress((i + 1) * 100 // len(logs))
-        time.sleep(0.8) # Скорость "загрузки"
-    
-    st.session_state.stage = 'result'
+    time.sleep(1)
+    st.session_state.stage = 'final'
     st.rerun()
 
-# СТРАНИЦА 3: Финальный результат
-elif st.session_state.stage == 'result':
-    st.title("> ACCESS GRANTED")
+# 3. Финальный экран
+elif st.session_state.stage == 'final':
+    st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ACCESS GRANTED ]</h1>", unsafe_allow_html=True)
     st.write("---")
     
-    st.subheader("DATA REPORT: 09.02.2026")
+    # Сначала печатаем поздравление красиво
+    type_text("Поздравление загружено...")
+    time.sleep(0.5)
     
-    st.markdown("""
-    **ОБЪЕКТ:** Папа  
-    **СТАТУС:** Главный человек в системе  
-    **ВЕРДИКТ:** С Днем Рождения!
+    st.markdown(f"""
+    <div style="border: 2px solid #00ff41; padding: 20px; border-radius: 5px;">
+        <h2 style="color:#00ff41; font-family:Courier New;">REPORT FOR: PAPA_ID</h2>
+        <p style="color:#00ff41; font-family:Courier New;">
+        <b>STATUS:</b> THE_BEST_FATHER_IN_WORLD <br>
+        <b>LOCATION:</b> FAMILY_CORE <br>
+        <b>DATE:</b> {time.strftime("%d.%m.%Y")} <br><br>
+        <b>MESSAGE:</b> <br>
+        Папа, система проанализировала все данные и пришла к выводу:<br>
+        Ты — самый надежный код в моей жизни. <br>
+        Желаю тебе здоровья, которое никогда не выдаст "Error", <br>
+        и счастья, которое будет копироваться бесконечным циклом!
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    ---
-    **КОММЕНТАРИЙ РАЗРАБОТЧИКА:** Папа, этот скрипт — мой способ сказать тебе спасибо.  
-    Ты — мой главный сервер стабильности и надежности.  
-    Желаю тебе 100% аптайма, крепкого здоровья  
-    и чтобы в твоей жизни никогда не было критических ошибок!
-    ---
-    """)
-    
-    if st.button("LOGOUT"):
-        st.session_state.stage = 'start'
+    st.write("")
+    if st.button("TERMINATE SESSION (EXIT)"):
+        st.session_state.stage = 'boot'
         st.rerun()
