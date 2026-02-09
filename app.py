@@ -4,130 +4,115 @@ import datetime
 import random
 
 # Настройка страницы
-st.set_page_config(page_title="Для папы", page_icon="❤️", layout="centered")
+st.set_page_config(page_title="PAPA_OS ULTRA", page_icon="👑", layout="centered")
 
-# Дизайн терминала с улучшенной подсветкой кнопок
+# Дизайн терминала с супер-подсветкой
 st.markdown("""
 <style>
     .stApp { background-color: #050505; }
-    
     .terminal-text {
         color: #00ff41;
         font-family: 'Courier New', Courier, monospace;
         text-shadow: 0 0 8px #00ff41;
-        line-height: 1.6;
     }
-    
-    /* Стилизация кнопок с эффектом подсветки */
     .stButton>button {
         color: #00ff41 !important;
         border: 2px solid #00ff41 !important;
         background-color: transparent !important;
-        font-family: 'Courier New', Courier, monospace !important;
-        width: 100%;
-        border-radius: 5px;
-        padding: 10px;
-        font-weight: bold;
-        text-transform: uppercase;
-        box-shadow: 0 0 5px #00ff41; /* Легкая постоянная подсветка */
-        transition: 0.3s all;
+        box-shadow: 0 0 10px #00ff41;
+        transition: 0.3s;
     }
-    
-    /* Эффект при наведении — кнопка начинает «гореть» */
     .stButton>button:hover {
         background-color: #00ff41 !important;
-        color: #000000 !important;
-        box-shadow: 0 0 25px #00ff41, 0 0 10px #00ff41; /* Мощное свечение */
-        transform: scale(1.02); /* Кнопка чуть увеличивается */
+        color: black !important;
+        box-shadow: 0 0 30px #00ff41;
     }
-
-    /* Стиль рамки поздравления */
     .wish-card {
         border: 2px solid #00ff41;
         padding: 25px;
-        border-radius: 10px;
-        background-color: #0a0a0a;
-        box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        border-radius: 15px;
+        background: linear-gradient(145deg, #0a0a0a, #111111);
+        box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Список длинных поздравлений
+# Список поздравлений
 random_wishes = [
-    """Дорогой папа, от всей души желаю тебе прежде всего крепкого и несокрушимого здоровья. 
-    Пусть каждый твой день начинается с бодрости и хорошего настроения, а энергии хватает на 
-    все важные дела и любимые хобби. Ты для нас — пример силы, и я хочу, чтобы ты всегда 
-    оставался таким же активным и жизнерадостным!""",
-    
-    """В этот особенный день хочу пожелать тебе большого успеха во всех твоих начинаниях. 
-    Пусть любая работа спорится, а все трудности отступают перед твоим опытом и мудростью. 
-    Я желаю тебе финансового благополучия и стабильности, чтобы ты мог воплощать в жизнь 
-    даже самые смелые свои мечты и планы!""",
-    
-    """Папа, пусть наш дом всегда будет для тебя самым уютным и спокойным местом на земле, 
-    где тебя всегда ждут, любят и поддерживают. Я очень ценю всё, что ты делаешь для нашей 
-    семьи, твою заботу и надежное плечо. Желаю тебе душевного спокойствия, радости от 
-    каждого прожитого момента и побольше времени на отдых в кругу близких.""",
-    
-    """Желаю тебе, чтобы жизнь была наполнена только добрыми новостями и приятными событиями. 
-    Пусть рядом всегда будут верные друзья и люди, на которых можно положиться. 
-    Я желаю тебе как можно больше поводов для гордости за себя и за нас, а мы в свою очередь 
-    будем стараться только радовать тебя своими успехами!""",
-    
-    """С днем рождения, самый лучший отец! Желаю тебе всегда сохранять ту удивительную 
-    выдержку и уверенность, которые в тебе есть. Пусть каждый новый год жизни приносит 
-    тебе только интересные открытия, новые цели и силы для их достижения. Знай, что твои 
-    советы для меня очень важны, и я всегда равняюсь на тебя!"""
+    "Дорогой папа, желаю тебе крепкого здоровья! Пусть энергии хватает на все идеи, а каждый день начинается с бодрости. Ты для нас — пример силы!",
+    "Желаю большого успеха в делах! Пусть любая работа спорится, а трудности отступают перед твоим опытом. Финансового благополучия и стабильности тебе!",
+    "Пусть наш дом всегда будет для тебя местом силы и уюта. Мы тебя очень любим и всегда поддержим. Душевного спокойствия тебе и побольше отдыха!",
+    "Желаю только добрых новостей! Пусть рядом будут верные друзья, а жизнь наполняется приятными сюрпризами. Гордимся тобой!",
+    "С днем рождения! Желаю сохранять твою крутую выдержку и уверенность. Пусть каждый год приносит новые цели и силы для их достижения!"
 ]
 
 if 'stage' not in st.session_state:
-    st.session_state.stage = 'boot'
-if 'current_wish' not in st.session_state:
-    st.session_state.current_wish = random.choice(random_wishes)
+    st.session_state.stage = 'security'
 
-# 1. Начало
-if st.session_state.stage == 'boot':
-    st.markdown("<h1 class='terminal-text' style='text-align:center;'>SYSTEM_READY...</h1>", unsafe_allow_html=True)
-    st.write("")
-    if st.button("ОТКРЫТЬ ЛИЧНОЕ ПОСЛАНИЕ"):
-        st.session_state.current_wish = random.choice(random_wishes)
+# --- ШАГ 1: ПРОВЕРКА ЛИЧНОСТИ ---
+if st.session_state.stage == 'security':
+    st.markdown("<h2 class='terminal-text'>[SECURITY CHECK]</h2>", unsafe_allow_html=True)
+    st.write("---")
+    answer = st.radio("КТО ЯВЛЯЕТСЯ ЛУЧШИМ ОТЦОМ В МИРЕ?", ["Не знаю", "Кто-то другой", "МОЙ ПАПА"])
+    
+    if st.button("ПОДТВЕРДИТЬ ЛИЧНОСТЬ"):
+        if answer == "МОЙ ПАПА":
+            st.success("ЛИЧНОСТЬ ПОДТВЕРЖДЕНА. ДОСТУП РАЗРЕШЕН.")
+            time.sleep(1)
+            st.session_state.stage = 'mood'
+            st.rerun()
+        else:
+            st.error("ОШИБКА ДОСТУПА. ПОПРОБУЙТЕ ЕЩЕ РАЗ.")
+
+# --- ШАГ 2: НАСТРОЙКА ПАРАМЕТРОВ ---
+elif st.session_state.stage == 'mood':
+    st.markdown("<h2 class='terminal-text'>[SYSTEM CALIBRATION]</h2>", unsafe_allow_html=True)
+    st.write("Папа, настрой уровень счастья на сегодня:")
+    happiness = st.slider("", 0, 100, 80)
+    
+    if st.button("ЗАПУСТИТЬ ПРОГРАММУ ПОЗДРАВЛЕНИЯ"):
+        if happiness > 90:
+            st.balloons()
         st.session_state.stage = 'loading'
         st.rerun()
 
-# 2. Загрузка
+# --- ШАГ 3: ЗАГРУЗКА ---
 elif st.session_state.stage == 'loading':
-    st.markdown("<p class='terminal-text'>[ЗАГРУЗКА]: Подбор поздравления из базы данных...</p>", unsafe_allow_html=True)
-    progress_bar = st.progress(0)
+    st.markdown("<p class='terminal-text'>[INIT]: Сборка праздничных модулей...</p>", unsafe_allow_html=True)
+    bar = st.progress(0)
     for i in range(100):
-        time.sleep(0.01)
-        progress_bar.progress(i + 1)
+        time.sleep(0.02)
+        bar.progress(i+1)
     st.session_state.stage = 'final'
     st.rerun()
 
-# 3. Финал
+# --- ШАГ 4: ФИНАЛ ---
 elif st.session_state.stage == 'final':
-    st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ДОСТУП РАЗРЕШЕН ]</h1>", unsafe_allow_html=True)
+    st.snow() # Эффект звезд/снега
+    st.markdown("<h1 class='terminal-text' style='text-align:center;'>🎉 ACCESS GRANTED 🎉</h1>", unsafe_allow_html=True)
     
-    # Время для Кайраккума
-    tz_tajikistan = datetime.timezone(datetime.timedelta(hours=5))
-    date_string = datetime.datetime.now(tz_tajikistan).strftime("%d.%m.%Y")
+    # Музыкальный бонус (эмбед видео с музыкой, можно скрыть или оставить)
+    st.write("🎵 Включи для атмосферы:")
+    st.video("https://www.youtube.com/watch?v=kxopViU98Xo", format="video/mp4", start_time=0)
+
+    tz = datetime.timezone(datetime.timedelta(hours=5))
+    date_str = datetime.datetime.now(tz).strftime("%d.%m.%Y")
     
     st.markdown(f"""
     <div class="wish-card">
-        <h2 style="color:#00ff41; font-family:Courier New; text-align:center;">С ДНЕМ РОЖДЕНИЯ, ПАПА! 🎉</h2>
-        <p style="color:#00ff41; font-family:Courier New; font-size: 16px;">
-        <b>ОТ КОГО:</b> Твой сын <br>
-        <b>ЛОКАЦИЯ:</b> Кайраккум <br>
-        <b>ДАТА:</b> {date_string} <br><br>
-        <b>ПОСЛАНИЕ:</b> <br>
-        {st.session_state.current_wish} <br><br>
-        --- <br>
-        <i style="font-size: 14px;">Я горжусь тем, что ты мой отец. Спасибо тебе за всё!</i>
+        <h2 style="color:#00ff41; text-align:center;">С ДНЕМ РОЖДЕНИЯ!</h2>
+        <p style="color:#00ff41; font-family:Courier New;">
+        <b>ОБЪЕКТ:</b> ЛУЧШИЙ ПАПА <br>
+        <b>ЛОКАЦИЯ:</b> КАЙРАККУМ <br>
+        <b>ДАТА:</b> {date_str} <br>
+        -------------------------------------------<br>
+        {random.choice(random_wishes)}<br>
+        -------------------------------------------<br>
+        <b>ОТ КОГО:</b> Твой сын. Я написал этот код, чтобы ты улыбнулся!
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.write("")
-    if st.button("ПРОЧИТАТЬ ДРУГОЕ ПОЖЕЛАНИЕ"):
-        st.session_state.stage = 'boot'
+    if st.button("ПОЛУЧИТЬ НОВОЕ ПОЖЕЛАНИЕ"):
+        st.session_state.stage = 'loading'
         st.rerun()
