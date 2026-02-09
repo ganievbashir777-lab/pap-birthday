@@ -9,16 +9,16 @@ NAME = "Твое Имя"
 
 st.set_page_config(page_title="PAPA_OS: Real Matrix", page_icon="📟", layout="centered")
 
-# Функция для генерации случайных бинарных строк для SVG
+# Функция для генерации "Матричного дождя" через SVG
 def get_matrix_svg():
-    cols = 50  # Количество вертикальных колонок
+    cols = 50  # Количество колонок
     svg_elements = ""
     for i in range(cols):
         x_pos = i * 20
-        duration = random.uniform(3, 8) # Разная скорость падения
-        delay = random.uniform(0, 5)
-        # Генерируем случайную цепочку 0 и 1
-        binary_str = "".join(random.choice(["0", "1", " "]) for _ in range(30))
+        duration = random.uniform(3, 8)  # Скорость падения
+        delay = random.uniform(0, 5)     # Задержка старта
+        # Сами цифры
+        binary_str = "".join(random.choice(["0", "1", " "]) for _ in range(25))
         svg_elements += f"""
         <text x="{x_pos}" y="-100" fill="#00ff41" font-family="monospace" font-size="18" opacity="0.4">
             {binary_str}
@@ -26,15 +26,12 @@ def get_matrix_svg():
         </text>
         """
     
-    return f"""
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <style> text {{ writing-mode: tb; glyph-orientation-vertical: 0; }} </style>
-        {svg_elements}
-    </svg>
-    """
+    return f"""<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><style>text {{ writing-mode: tb; glyph-orientation-vertical: 0; }}</style>{svg_elements}</svg>"""
 
-# Внедряем Матрицу в фон через CSS
-matrix_bg = get_matrix_svg().replace("\n", "") # Убираем переносы строк для CSS
+# Очистка SVG для вставки в CSS
+matrix_bg = get_matrix_svg().replace("\n", "").replace("#", "%23")
+
+# Применяем стили
 st.markdown(f"""
 <style>
     .stApp {{
@@ -67,6 +64,7 @@ st.markdown(f"""
         box-shadow: 0 0 15px #00ff41;
         width: 100%;
         font-weight: bold;
+        transition: 0.3s;
     }}
     
     .stButton>button:hover {{
@@ -90,7 +88,7 @@ random_wishes = [
 if 'stage' not in st.session_state:
     st.session_state.stage = 'loading'
 
-# 1. Загрузка
+# 1. Этап загрузки
 if st.session_state.stage == 'loading':
     st.markdown("<h2 class='terminal-text' style='text-align:center;'>INITIALIZING MATRIX STREAM...</h2>", unsafe_allow_html=True)
     progress_bar = st.progress(0)
@@ -105,7 +103,7 @@ if st.session_state.stage == 'loading':
     st.session_state.stage = 'final'
     st.rerun()
 
-# 2. Финал
+# 2. Финальное поздравление
 elif st.session_state.stage == 'final':
     st.markdown("<h1 class='terminal-text' style='text-align:center;'>ACCESS GRANTED</h1>", unsafe_allow_html=True)
     
@@ -127,11 +125,12 @@ elif st.session_state.stage == 'final':
         {st.session_state.display_wish}<br>
         -------------------------------------------<br><br>
         <b>АВТОР:</b> {NAME} <br>
-        <i>Проект выполнен специально для тебя.</i>
+        <i>Проект выполнен на Python специально для тебя.</i>
         </p>
     </div>
     """, unsafe_allow_html=True)
     
+    st.write("")
     if st.button("СГЕНЕРИРОВАТЬ ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
         st.session_state.display_wish = random.choice(random_wishes)
         st.rerun()
