@@ -6,32 +6,53 @@ import random
 # Настройка страницы
 st.set_page_config(page_title="Для папы", page_icon="❤️", layout="centered")
 
-# Дизайн терминала
+# Дизайн терминала с улучшенной подсветкой кнопок
 st.markdown("""
 <style>
     .stApp { background-color: #050505; }
+    
     .terminal-text {
         color: #00ff41;
         font-family: 'Courier New', Courier, monospace;
-        text-shadow: 0 0 5px #00ff41;
+        text-shadow: 0 0 8px #00ff41;
         line-height: 1.6;
     }
+    
+    /* Стилизация кнопок с эффектом подсветки */
     .stButton>button {
         color: #00ff41 !important;
-        border: 1px solid #00ff41 !important;
+        border: 2px solid #00ff41 !important;
         background-color: transparent !important;
         font-family: 'Courier New', Courier, monospace !important;
         width: 100%;
-        border-radius: 0px;
+        border-radius: 5px;
+        padding: 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+        box-shadow: 0 0 5px #00ff41; /* Легкая постоянная подсветка */
+        transition: 0.3s all;
     }
+    
+    /* Эффект при наведении — кнопка начинает «гореть» */
     .stButton>button:hover {
         background-color: #00ff41 !important;
         color: #000000 !important;
+        box-shadow: 0 0 25px #00ff41, 0 0 10px #00ff41; /* Мощное свечение */
+        transform: scale(1.02); /* Кнопка чуть увеличивается */
+    }
+
+    /* Стиль рамки поздравления */
+    .wish-card {
+        border: 2px solid #00ff41;
+        padding: 25px;
+        border-radius: 10px;
+        background-color: #0a0a0a;
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Список длинных, человеческих поздравлений
+# Список длинных поздравлений
 random_wishes = [
     """Дорогой папа, от всей души желаю тебе прежде всего крепкого и несокрушимого здоровья. 
     Пусть каждый твой день начинается с бодрости и хорошего настроения, а энергии хватает на 
@@ -59,14 +80,6 @@ random_wishes = [
     советы для меня очень важны, и я всегда равняюсь на тебя!"""
 ]
 
-def type_text(text, delay=0.03):
-    placeholder = st.empty()
-    displayed_text = ""
-    for char in text:
-        displayed_text += char
-        placeholder.markdown(f"<p class='terminal-text'>{displayed_text}</p>", unsafe_allow_html=True)
-        time.sleep(delay)
-
 if 'stage' not in st.session_state:
     st.session_state.stage = 'boot'
 if 'current_wish' not in st.session_state:
@@ -74,7 +87,8 @@ if 'current_wish' not in st.session_state:
 
 # 1. Начало
 if st.session_state.stage == 'boot':
-    st.markdown("<h1 class='terminal-text' style='text-align:center;'>SYSTEM_BOOT_INIT...</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='terminal-text' style='text-align:center;'>SYSTEM_READY...</h1>", unsafe_allow_html=True)
+    st.write("")
     if st.button("ОТКРЫТЬ ЛИЧНОЕ ПОСЛАНИЕ"):
         st.session_state.current_wish = random.choice(random_wishes)
         st.session_state.stage = 'loading'
@@ -82,10 +96,10 @@ if st.session_state.stage == 'boot':
 
 # 2. Загрузка
 elif st.session_state.stage == 'loading':
-    st.markdown("<p class='terminal-text'>[ЗАГРУЗКА]: Подбор самого искреннего пожелания...</p>", unsafe_allow_html=True)
+    st.markdown("<p class='terminal-text'>[ЗАГРУЗКА]: Подбор поздравления из базы данных...</p>", unsafe_allow_html=True)
     progress_bar = st.progress(0)
     for i in range(100):
-        time.sleep(0.01) # Ускорил загрузку, чтобы не ждать долго
+        time.sleep(0.01)
         progress_bar.progress(i + 1)
     st.session_state.stage = 'final'
     st.rerun()
@@ -94,11 +108,12 @@ elif st.session_state.stage == 'loading':
 elif st.session_state.stage == 'final':
     st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ДОСТУП РАЗРЕШЕН ]</h1>", unsafe_allow_html=True)
     
+    # Время для Кайраккума
     tz_tajikistan = datetime.timezone(datetime.timedelta(hours=5))
     date_string = datetime.datetime.now(tz_tajikistan).strftime("%d.%m.%Y")
     
     st.markdown(f"""
-    <div style="border: 2px solid #00ff41; padding: 25px; border-radius: 10px; background-color: #0a0a0a; box-shadow: 0 0 15px #00ff41;">
+    <div class="wish-card">
         <h2 style="color:#00ff41; font-family:Courier New; text-align:center;">С ДНЕМ РОЖДЕНИЯ, ПАПА! 🎉</h2>
         <p style="color:#00ff41; font-family:Courier New; font-size: 16px;">
         <b>ОТ КОГО:</b> Твой сын <br>
@@ -112,32 +127,7 @@ elif st.session_state.stage == 'final':
     </div>
     """, unsafe_allow_html=True)
     
+    st.write("")
     if st.button("ПРОЧИТАТЬ ДРУГОЕ ПОЖЕЛАНИЕ"):
-        st.session_state.stage = 'boot'
-        st.rerun()
-
-# 3. Финал
-elif st.session_state.stage == 'final':
-    st.markdown("<h1 class='terminal-text' style='color:#00ff41;'>[ ДОСТУП РАЗРЕШЕН ]</h1>", unsafe_allow_html=True)
-    
-    tz_tajikistan = datetime.timezone(datetime.timedelta(hours=5))
-    date_string = datetime.datetime.now(tz_tajikistan).strftime("%d.%m.%Y")
-    
-    st.markdown(f"""
-    <div style="border: 2px solid #00ff41; padding: 25px; border-radius: 10px; background-color: #0a0a0a;">
-        <h2 style="color:#00ff41; font-family:Courier New; text-align:center;">С ДНЕМ РОЖДЕНИЯ, ПАПА!</h2>
-        <p style="color:#00ff41; font-family:Courier New;">
-        <b>ОТ КОГО:</b> Твой сын <br>
-        <b>ЛОКАЦИЯ:</b> Кайраккум <br>
-        <b>ДАТА:</b> {date_string} <br><br>
-        <b>ЛИЧНОЕ ПОЖЕЛАНИЕ:</b> <br>
-        {st.session_state.current_wish} <br><br>
-        --- <br>
-        Дорогой папа, я тебя очень люблю и горжусь тобой. Оставайся всегда таким же сильным и мудрым!
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button("ПОЛУЧИТЬ ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
         st.session_state.stage = 'boot'
         st.rerun()
