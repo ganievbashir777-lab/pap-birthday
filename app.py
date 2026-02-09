@@ -8,17 +8,52 @@ NAME = "Твое Имя"
 # ---------------------------
 
 # Настройка страницы
-st.set_page_config(page_title="Для папы", page_icon="❤️", layout="centered")
+st.set_page_config(page_title="PAPA_OS: Matrix Edition", page_icon="💚", layout="centered")
 
-# Дизайн терминала
+# Дизайн терминала с Матричным дождем
 st.markdown("""
 <style>
-    .stApp { background-color: #050505; }
+    /* Весь фон для эффекта матрицы */
+    .stApp {
+        background-color: #050505;
+        overflow: hidden; /* Скрываем прокрутку, если матрица слишком большая */
+    }
+    
+    /* Контейнер для Матричного дождя */
+    .matrix-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1; /* За матричным дождем будет основной контент */
+        opacity: 0.2; /* Делаем его полупрозрачным */
+        pointer-events: none; /* Чтобы не мешал нажимать кнопки */
+    }
+
+    /* Анимация падающих символов */
+    @keyframes matrix-fall {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(100%); }
+    }
+    .matrix-column {
+        position: absolute;
+        width: 15px; /* Ширина колонки */
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 16px;
+        color: #00ff41;
+        white-space: pre;
+        animation: matrix-fall linear infinite;
+    }
+    
     .terminal-text {
         color: #00ff41;
         font-family: 'Courier New', Courier, monospace;
         text-shadow: 0 0 8px #00ff41;
         line-height: 1.6;
+        background-color: rgba(5,5,5,0.7); /* Фон для читабельности текста */
+        padding: 5px;
+        border-radius: 3px;
     }
     .stButton>button {
         color: #00ff41 !important;
@@ -37,10 +72,33 @@ st.markdown("""
         border: 2px solid #00ff41;
         padding: 25px;
         border-radius: 15px;
-        background: linear-gradient(145deg, #0a0a0a, #111111);
+        background: linear-gradient(145deg, rgba(10,10,10,0.8), rgba(17,17,17,0.9)); /* Полупрозрачный фон */
         box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
     }
 </style>
+
+<div class="matrix-background" id="matrix-container"></div>
+
+<script>
+    const container = document.getElementById('matrix-container');
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+=-[]{};:'\",.<>/?`~";
+    const numColumns = Math.floor(window.innerWidth / 15); // 15px ширина колонки
+    
+    for (let i = 0; i < numColumns; i++) {
+        const column = document.createElement('div');
+        column.className = 'matrix-column';
+        column.style.left = `${i * 15}px`;
+        column.style.animationDuration = `${Math.random() * 5 + 5}s`; // Длительность анимации
+        column.style.animationDelay = `-${Math.random() * 5}s`; // Чтобы не все сразу стартовали
+        
+        let columnText = '';
+        for (let j = 0; j < 50; j++) { // 50 символов в колонке
+            columnText += chars.charAt(Math.floor(Math.random() * chars.length)) + '\\n';
+        }
+        column.innerText = columnText;
+        container.appendChild(column);
+    }
+</script>
 """, unsafe_allow_html=True)
 
 # Список длинных и душевных поздравлений
@@ -109,7 +167,6 @@ elif st.session_state.stage == 'final':
     </div>
     """, unsafe_allow_html=True)
     
-    st.write("")
     if st.button("ПОЛУЧИТЬ ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
         st.session_state.display_wish = random.choice(random_wishes)
         st.rerun()
