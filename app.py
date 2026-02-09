@@ -22,7 +22,7 @@ def get_matrix_svg():
         svg_elements += f"""
         <text x="{x_pos}" y="-100" fill="#00ff41" font-family="monospace" font-size="18" opacity="0.4">
             {binary_str}
-            <animateAttribute attributeName="y" from="-500" to="1000" dur="{duration}s" begin="-{delay}s" repeatCount="indefinite" />
+            <animate attributeName="y" from="-500" to="1000" dur="{duration}s" begin="-{delay}s" repeatCount="indefinite" />
         </text>
         """
     
@@ -34,11 +34,12 @@ def get_matrix_svg():
     """
 
 # Внедряем Матрицу в фон через CSS
+matrix_bg = get_matrix_svg().replace("\n", "") # Убираем переносы строк для CSS
 st.markdown(f"""
 <style>
     .stApp {{
         background-color: #000000;
-        background-image: url('data:image/svg+xml;utf8,{get_matrix_svg()}');
+        background-image: url('data:image/svg+xml;utf8,{matrix_bg}');
         background-size: cover;
     }}
 
@@ -51,7 +52,7 @@ st.markdown(f"""
         background-color: rgba(5, 5, 5, 0.95);
         box-shadow: 0 0 40px rgba(0, 255, 65, 0.5);
         margin-top: 50px;
-    }
+    }}
 
     .terminal-text {{
         color: #00ff41;
