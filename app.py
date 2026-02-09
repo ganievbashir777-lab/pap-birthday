@@ -4,11 +4,11 @@ import datetime
 import random
 
 # --- ВПИШИ СВОЕ ИМЯ ЗДЕСЬ ---
-NAME = "Алишер" # Замени Алишер на свое имя
+NAME = "Твое Имя" 
 # ---------------------------
 
 # Настройка страницы
-st.set_page_config(page_title="PAPA_OS: Security Login", page_icon="🔐", layout="centered")
+st.set_page_config(page_title="Для папы", page_icon="❤️", layout="centered")
 
 # Дизайн терминала
 st.markdown("""
@@ -18,6 +18,7 @@ st.markdown("""
         color: #00ff41;
         font-family: 'Courier New', Courier, monospace;
         text-shadow: 0 0 8px #00ff41;
+        line-height: 1.6;
     }
     .stButton>button {
         color: #00ff41 !important;
@@ -25,6 +26,7 @@ st.markdown("""
         background-color: transparent !important;
         box-shadow: 0 0 10px #00ff41;
         transition: 0.3s;
+        font-family: 'Courier New', Courier, monospace;
     }
     .stButton>button:hover {
         background-color: #00ff41 !important;
@@ -41,68 +43,49 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Список длинных поздравлений
+# Список длинных и душевных поздравлений
 random_wishes = [
-    "Дорогой папа, желаю тебе крепкого и несокрушимого здоровья! Пусть энергии хватает на все идеи, а каждый день начинается с бодрости. Ты для нас — пример силы!",
-    "Желаю большого успеха в делах! Пусть любая работа спорится, а трудности отступают перед твоим опытом и мудростью. Благополучия и стабильности тебе!",
-    "Пусть наш дом всегда будет для тебя местом силы и уюта. Мы тебя очень любим и всегда поддержим. Желаю тебе душевного спокойствия и побольше отдыха!",
-    "Желаю только добрых новостей! Пусть рядом всегда будут верные друзья, а жизнь наполняется приятными сюрпризами. Гордимся тобой!",
-    "С днем рождения, лучший отец! Желаю сохранять твою крутую выдержку и уверенность. Пусть каждый год приносит новые цели и силы для их достижения!"
+    "Дорогой папа, желаю тебе прежде всего крепкого и несокрушимого здоровья! Пусть энергии хватает на все твои идеи, а каждый день начинается с бодрости. Ты для нас — пример силы и мудрости!",
+    "В этот день хочу пожелать тебе большого успеха во всех делах. Пусть любая работа спорится, а трудности отступают. Желаю тебе благополучия, стабильности и только добрых новостей!",
+    "Пусть наш дом всегда будет для тебя местом силы и уюта. Мы тебя очень любим и всегда поддержим. Желаю тебе душевного спокойствия, радости и побольше времени на отдых в кругу семьи!",
+    "Желаю, чтобы жизнь была наполнена только приятными событиями. Пусть рядом всегда будут верные друзья. Я желаю тебе как можно больше поводов для гордости, а мы будем радовать тебя успехами!",
+    "С днем рождения, самый лучший отец! Желаю тебе всегда сохранять твою выдержку и уверенность. Пусть каждый год приносит новые цели и силы для их достижения. Спасибо за всё!"
 ]
 
 if 'stage' not in st.session_state:
-    st.session_state.stage = 'security_1'
+    st.session_state.stage = 'loading'
 
-# --- ШАГ 1: ВОПРОС ПРО ИМЯ СЫНА ---
-if st.session_state.stage == 'security_1':
-    st.markdown("<h2 class='terminal-text'>[SECURITY LEVEL 1]</h2>", unsafe_allow_html=True)
-    st.write("---")
-    st.markdown(f"<p class='terminal-text'>ВВЕДИТЕ ИМЯ СЫНА ДЛЯ ПОДТВЕРЖДЕНИЯ ДОСТУПА:</p>", unsafe_allow_html=True)
-    ans1 = st.text_input("Username:", key="name_input")
+# --- ШАГ 1: АНИМАЦИЯ ЗАГРУЗКИ ---
+if st.session_state.stage == 'loading':
+    st.markdown("<h2 class='terminal-text' style='text-align:center;'>PAPA_OS v3.0: INITIALIZING...</h2>", unsafe_allow_html=True)
+    st.write("")
     
-    if st.button("LOGIN"):
-        # Проверяем имя (переводим в нижний регистр, чтобы не было ошибки из-за больших букв)
-        if ans1.lower().strip() == NAME.lower().strip():
-            st.success("ЛИЧНОСТЬ АВТОРА ПОДТВЕРЖДЕНА...")
-            time.sleep(1)
-            st.session_state.stage = 'security_2'
-            st.rerun()
-        else:
-            st.error("ОШИБКА: НЕВЕРНОЕ ИМЯ ПОЛЬЗОВАТЕЛЯ.")
-
-# --- ШАГ 2: ВОПРОС ПРО СТАТУС ---
-elif st.session_state.stage == 'security_2':
-    st.markdown("<h2 class='terminal-text'>[SECURITY LEVEL 2]</h2>", unsafe_allow_html=True)
-    st.write("---")
-    st.markdown("<p class='terminal-text'>ПОДТВЕРДИТЕ ВАШ СТАТУС В ЭТОЙ СИСТЕМЕ:</p>", unsafe_allow_html=True)
-    ans2 = st.radio("", ["Посторонний", "Гость", "ЛУЧШИЙ ОТЕЦ В МИРЕ"])
+    progress_bar = st.progress(0)
+    status_text = st.empty()
     
-    if st.button("CONFIRM"):
-        if ans2 == "ЛУЧШИЙ ОТЕЦ В МИРЕ":
-            st.success("ДОСТУП ПОЛНОСТЬЮ РАЗРЕШЕН.")
-            time.sleep(1)
-            st.session_state.stage = 'mood'
-            st.rerun()
-        else:
-            st.warning("ДОСТУП ЗАБЛОКИРОВАН. ВЫБЕРИТЕ ВЕРНЫЙ СТАТУС.")
-
-# --- ШАГ 3: КАЛИБРОВКА СЧАСТЬЯ ---
-elif st.session_state.stage == 'mood':
-    st.markdown("<h2 class='terminal-text'>[SYSTEM CALIBRATION]</h2>", unsafe_allow_html=True)
-    st.write("Настройте уровень праздничного настроения (0-100%):")
-    happiness = st.slider("", 0, 100, 100)
+    logs = [
+        "Connecting to Family_Server...",
+        "Scanning for 'Best Father' records...",
+        "Location: Tajikistan, Kayrakkum... Verified.",
+        "Generating unique wishes...",
+        "Accessing security protocols... Bypassed.",
+        "System ready."
+    ]
     
-    if st.button("РАСШИФРОВАТЬ ПОЗДРАВЛЕНИЕ"):
-        if happiness > 50:
-            st.balloons()
-        st.session_state.stage = 'final'
-        st.rerun()
+    for i, log in enumerate(logs):
+        status_text.markdown(f"<p class='terminal-text' style='font-size:12px;'>[SYSTEM]: {log}</p>", unsafe_allow_html=True)
+        progress_bar.progress((i + 1) * 100 // len(logs))
+        time.sleep(0.7)
+    
+    st.session_state.stage = 'final'
+    st.rerun()
 
-# --- ШАГ 4: ФИНАЛ ---
+# --- ШАГ 2: ФИНАЛЬНОЕ ПОЗДРАВЛЕНИЕ ---
 elif st.session_state.stage == 'final':
-    st.snow()
-    st.markdown("<h1 class='terminal-text' style='text-align:center;'>🎉 ACCESS GRANTED 🎉</h1>", unsafe_allow_html=True)
+    st.snow() # Праздничный эффект
+    st.markdown("<h1 class='terminal-text' style='text-align:center;'>🎉 С ДНЕМ РОЖДЕНИЯ! 🎉</h1>", unsafe_allow_html=True)
     
+    # Расчет даты для Кайраккума
     tz = datetime.timezone(datetime.timedelta(hours=5))
     date_str = datetime.datetime.now(tz).strftime("%d.%m.%Y")
     
@@ -111,21 +94,22 @@ elif st.session_state.stage == 'final':
 
     st.markdown(f"""
     <div class="wish-card">
-        <h2 style="color:#00ff41; text-align:center; font-family: Courier New;">ОТЧЕТ: ДЕНЬ РОЖДЕНИЯ</h2>
+        <h2 style="color:#00ff41; text-align:center; font-family: Courier New;">ЛИЧНЫЙ ОТЧЕТ</h2>
         <p style="color:#00ff41; font-family:Courier New; font-size: 16px;">
-        <b>ПОЛУЧАТЕЛЬ:</b> ПАПА <br>
-        <b>ГОРОД:</b> КАЙРАККУМ <br>
+        <b>ПОЛУЧАТЕЛЬ:</b> ЛУЧШИЙ ПАПА <br>
+        <b>ЛОКАЦИЯ:</b> КАЙРАККУМ <br>
         <b>ДАТА:</b> {date_str} <br>
         -------------------------------------------<br>
-        <b>ПОЗДРАВЛЕНИЕ:</b><br>
+        <b>ПОСЛАНИЕ:</b><br>
         {st.session_state.display_wish}<br>
         -------------------------------------------<br><br>
-        <b>АВТОР КОДА:</b> {NAME} <br>
-        <i>Сделано с любовью на Python специально для тебя!</i>
+        <b>АВТОР:</b> {NAME} <br>
+        <i>Этот проект написан на языке Python специально в твою честь!</i>
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    if st.button("ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
+    st.write("")
+    if st.button("ПОЛУЧИТЬ ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
         st.session_state.display_wish = random.choice(random_wishes)
         st.rerun()
