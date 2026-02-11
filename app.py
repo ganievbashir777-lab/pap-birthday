@@ -9,7 +9,7 @@ NAME = "Твое Имя"
 
 st.set_page_config(page_title="С Днем Рождения, Папа!", page_icon="🎂", layout="centered")
 
-# CSS для красивого праздничного оформления и центрирования
+# CSS для оформления и выравнивания кнопки влево
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
@@ -19,7 +19,7 @@ st.markdown("""
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
 
-    /* Магия центрирования содержимого */
+    /* Центрирование карточки на экране */
     [data-testid="stVerticalBlock"] {
         display: flex;
         flex-direction: column;
@@ -37,10 +37,9 @@ st.markdown("""
         text-align: left;
         max-width: 550px;
         width: 100%;
-        border: none;
     }
 
-    /* Заголовок внутри карточки */
+    /* Заголовок */
     .card-title {
         font-family: 'Pacifico', cursive;
         color: #6a11cb;
@@ -63,7 +62,7 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Та самая маленькая аккуратная кнопка */
+    /* СТИЛЬ КНОПКИ: ВЫРАВНИВАНИЕ ВЛЕВО */
     div.stButton > button {
         background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%) !important;
         color: white !important;
@@ -73,8 +72,10 @@ st.markdown("""
         font-weight: bold !important;
         font-size: 0.9rem !important;
         transition: all 0.3s ease !important;
+        
+        /* Изменено здесь: margin-left: 0 прижимает кнопку к левому краю */
         display: block !important;
-        margin: 20px auto !important;
+        margin: 20px 0 !important; 
         width: auto !important;
     }
 
@@ -87,10 +88,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Эффекты праздника при загрузке страницы
+# Эффекты праздника при загрузке
 st.balloons()
 
-# Список пожеланий
 wishes = [
     "Дорогой папа, поздравляю тебя с днем рождения! Желаю тебе самого крепкого здоровья, долгих лет жизни и чтобы каждый день приносил только радость. Ты — лучший пример для меня!",
     "С днем рождения, папа! Пусть твоя жизнь будет наполнена светом и теплом. Желаю удачи во всех делах, бодрости духа и отличного настроения!",
@@ -99,13 +99,12 @@ wishes = [
     "Желаю здоровья на сто лет вперед, чтобы каждый день в Кайраккуме был солнечным и добрым. С днем рождения!"
 ]
 
-# Хранение текущего сообщения
 if 'msg' not in st.session_state:
     st.session_state.msg = random.choice(wishes)
 
 now = datetime.datetime.now().strftime("%d.%m.%Y")
 
-# Вывод основной карточки
+# Отображение карточки
 st.markdown(f"""
 <div class="main-card">
     <div class="card-title">С Днём Рождения! 🎂</div>
@@ -121,7 +120,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Кнопка обновления (маленькая и под карточкой)
+# Кнопка теперь будет слева под карточкой
 if st.button("Прочитать другое пожелание ✨"):
     st.session_state.msg = random.choice(wishes)
     st.rerun()
