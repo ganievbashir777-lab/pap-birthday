@@ -9,17 +9,15 @@ NAME = "Твое Имя"
 
 st.set_page_config(page_title="С Днем Рождения, Папа!", page_icon="🎂", layout="centered")
 
-# CSS для оформления и выравнивания кнопки влево
+# CSS для оформления и ПРИНУДИТЕЛЬНОГО выравнивания кнопки влево
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
 
-    /* Мягкий праздничный фон */
     .stApp {
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
 
-    /* Центрирование карточки на экране */
     [data-testid="stVerticalBlock"] {
         display: flex;
         flex-direction: column;
@@ -28,7 +26,6 @@ st.markdown("""
         min-height: 80vh;
     }
 
-    /* Стиль основной белой карточки */
     .main-card {
         background-color: white;
         padding: 40px;
@@ -39,7 +36,6 @@ st.markdown("""
         width: 100%;
     }
 
-    /* Заголовок */
     .card-title {
         font-family: 'Pacifico', cursive;
         color: #6a11cb;
@@ -48,7 +44,6 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Текст пожелания */
     .wish-text {
         font-family: 'Roboto', sans-serif;
         font-size: 1.3rem;
@@ -62,7 +57,14 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* СТИЛЬ КНОПКИ: ВЫРАВНИВАНИЕ ВЛЕВО */
+    /* Специальный контейнер для кнопки, чтобы прижать её влево */
+    .left-aligned-button {
+        display: flex;
+        justify-content: flex-start; /* ВЫРАВНИВАНИЕ ВЛЕВО */
+        width: 100%;
+        max-width: 550px;
+    }
+
     div.stButton > button {
         background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%) !important;
         color: white !important;
@@ -71,32 +73,21 @@ st.markdown("""
         border-radius: 50px !important;
         font-weight: bold !important;
         font-size: 0.9rem !important;
-        transition: all 0.3s ease !important;
-        
-        /* Изменено здесь: margin-left: 0 прижимает кнопку к левому краю */
-        display: block !important;
-        margin: 20px 0 !important; 
         width: auto !important;
-    }
-
-    div.stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3);
+        margin-left: 0 !important; /* Убираем любые отступы слева */
     }
 
     header, footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# Эффекты праздника при загрузке
 st.balloons()
 
 wishes = [
     "Дорогой папа, поздравляю тебя с днем рождения! Желаю тебе самого крепкого здоровья, долгих лет жизни и чтобы каждый день приносил только радость. Ты — лучший пример для меня!",
     "С днем рождения, папа! Пусть твоя жизнь будет наполнена светом и теплом. Желаю удачи во всех делах, бодрости духа и отличного настроения!",
     "Папа, спасибо тебе за твою мудрость и поддержку. Желаю тебе финансового благополучия, душевного спокойствия и чтобы все твои мечты обязательно сбывались!",
-    "Самый лучший папа, с праздником! Пусть этот год принесет тебе много радости и новых успехов. Мы тебя очень любим!",
-    "Желаю здоровья на сто лет вперед, чтобы каждый день в Кайраккуме был солнечным и добрым. С днем рождения!"
+    "Самый лучший папа, с праздником! Пусть этот год принесет тебе много радости и новых успехов. Мы тебя очень любим!"
 ]
 
 if 'msg' not in st.session_state:
@@ -104,7 +95,7 @@ if 'msg' not in st.session_state:
 
 now = datetime.datetime.now().strftime("%d.%m.%Y")
 
-# Отображение карточки
+# Карточка
 st.markdown(f"""
 <div class="main-card">
     <div class="card-title">С Днём Рождения! 🎂</div>
@@ -120,7 +111,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Кнопка теперь будет слева под карточкой
+# Оборачиваем кнопку в div, который принудительно выравнивает её влево
+st.markdown('<div class="left-aligned-button">', unsafe_allow_html=True)
 if st.button("Прочитать другое пожелание ✨"):
     st.session_state.msg = random.choice(wishes)
     st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
