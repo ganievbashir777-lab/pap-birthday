@@ -9,26 +9,43 @@ NAME = "Твое Имя"
 
 st.set_page_config(page_title="С Днем Рождения, Папа!", page_icon="🎂", layout="centered")
 
-# CSS для оформления: светлые тона, центрирование и кнопка слева
+# CSS для центрирования, стиля открытки и кнопок
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap');
 
-    /* Мягкий праздничный фон */
     .stApp {
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
 
-    /* Центрирование карточки на экране */
+    /* Центрирование всего контента */
     [data-testid="stVerticalBlock"] {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 80vh;
+        min-height: 85vh;
     }
 
-    /* Стиль основной белой карточки */
+    /* СТИЛЬ ПЕРВОЙ ОТКРЫТКИ (КНОПКИ) */
+    .envelope-container div.stButton > button {
+        background-color: white !important;
+        border: 4px dashed #6a11cb !important;
+        border-radius: 30px !important;
+        padding: 60px 40px !important;
+        width: 350px !important;
+        height: 250px !important;
+        box-shadow: 0 15px 40px rgba(106, 17, 203, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .envelope-container div.stButton > button:hover {
+        transform: translateY(-10px) scale(1.02) !important;
+        box-shadow: 0 20px 50px rgba(106, 17, 203, 0.3) !important;
+        border-style: solid !important;
+    }
+
+    /* СТИЛЬ КАРТОЧКИ ПОЗДРАВЛЕНИЯ */
     .main-card {
         background-color: white;
         padding: 40px;
@@ -37,10 +54,14 @@ st.markdown("""
         text-align: left;
         max-width: 550px;
         width: 100%;
-        border: none;
+        animation: fadeIn 0.8s ease-out;
     }
 
-    /* Заголовок внутри карточки */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     .card-title {
         font-family: 'Pacifico', cursive;
         color: #6a11cb;
@@ -49,7 +70,6 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Текст пожелания */
     .wish-text {
         font-family: 'Roboto', sans-serif;
         font-size: 1.3rem;
@@ -63,70 +83,73 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Контейнер для выравнивания кнопки влево */
-    .button-container {
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        max-width: 550px;
-    }
-
-    /* Стиль маленькой аккуратной кнопки */
-    div.stButton > button {
+    /* КНОПКА "ДРУГОЕ ПОЖЕЛАНИЕ" (СЛЕВА) */
+    .left-btn div.stButton > button {
         background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%) !important;
         color: white !important;
         border: none !important;
         padding: 10px 25px !important;
         border-radius: 50px !important;
-        font-weight: bold !important;
         font-size: 0.9rem !important;
-        transition: all 0.3s ease !important;
         width: auto !important;
         margin-left: 0 !important;
-    }
-
-    div.stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3);
+        height: auto !important;
     }
 
     header, footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# Список пожеланий
-wishes = [
-    "Дорогой папа, поздравляю тебя с днем рождения! Желаю тебе самого крепкого здоровья, долгих лет жизни и чтобы каждый день приносил только радость. Ты — лучший пример для меня!",
-    "С днем рождения, папа! Пусть твоя жизнь будет наполнена светом и теплом. Желаю удачи во всех делах, бодрости духа и отличного настроения!",
-    "Папа, спасибо тебе за твою мудрость и поддержку. Желаю тебе финансового благополучия, душевного спокойствия и чтобы все твои мечты обязательно сбывались!",
-    "Самый лучший папа, с праздником! Пусть этот год принесет тебе много радости и новых успехов. Мы тебя очень любим!",
-    "Желаю здоровья на сто лет вперед, чтобы каждый день в Кайраккуме был солнечным и добрым. С днем рождения!"
-]
+# Инициализация состояния
+if 'opened' not in st.session_state:
+    st.session_state.opened = False
 
-if 'msg' not in st.session_state:
-    st.session_state.msg = random.choice(wishes)
+# --- ЭКРАН 1: ЗАКРЫТАЯ ОТКРЫТКА ---
+if not st.session_state.opened:
+    st.markdown("<h1 style='font-family: Pacifico; color: #6a11cb; text-align: center;'>Для тебя, Папа!</h1>", unsafe_allow_html=True)
+    
+    st.markdown('<div class="envelope-container">', unsafe_allow_html=True)
+    if st.button("✉️\n\nНАЖМИ, ЧТОБЫ ОТКРЫТЬ"):
+        st.session_state.opened = True
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
-now = datetime.datetime.now().strftime("%d.%m.%Y")
+# --- ЭКРАН 2: САМО ПОЗДРАВЛЕНИЕ ---
+else:
+    # Конфетти (без шариков)
+    st.snow() 
 
-# Отображение карточки
-st.markdown(f"""
-<div class="main-card">
-    <div class="card-title">С Днём Рождения! 🎂</div>
-    <div class="wish-text">
-        "{st.session_state.msg}"
+    wishes = [
+        "Дорогой папа, поздравляю тебя с днем рождения! Желаю тебе самого крепкого здоровья, долгих лет жизни и чтобы каждый день приносил только радость. Ты — лучший пример для меня!",
+        "С днем рождения, папа! Пусть твоя жизнь будет наполнена светом и теплом. Желаю удачи во всех делах, бодрости духа и отличного настроения!",
+        "Папа, спасибо тебе за твою мудрость и поддержку. Желаю тебе финансового благополучия, душевного спокойствия и чтобы все твои мечты обязательно сбывались!",
+        "Самый лучший папа, с праздником! Пусть этот год принесет тебе много радости и новых успехов. Мы тебя очень любим!",
+        "Желаю здоровья на сто лет вперед, чтобы каждый день в Кайраккуме был солнечным и добрым. С днем рождения!"
+    ]
+
+    if 'msg' not in st.session_state:
+        st.session_state.msg = random.choice(wishes)
+
+    now = datetime.datetime.now().strftime("%d.%m.%Y")
+
+    st.markdown(f"""
+    <div class="main-card">
+        <div class="card-title">С Днём Рождения! 🎂</div>
+        <div class="wish-text">
+            "{st.session_state.msg}"
+        </div>
+        <div style="border-top: 1px solid #eee; padding-top: 15px; color: #7f8c8d; font-family: 'Roboto'; font-size: 0.9rem;">
+            <p><b>Для кого:</b> Любимому папе</p>
+            <p><b>От кого:</b> {NAME}</p>
+            <p><b>Дата:</b> {now}</p>
+            <p><b>Место:</b> Кайраккум</p>
+        </div>
     </div>
-    <div style="border-top: 1px solid #eee; padding-top: 15px; color: #7f8c8d; font-family: 'Roboto'; font-size: 0.9rem;">
-        <p><b>Для кого:</b> Любимому папе</p>
-        <p><b>От кого:</b> {NAME}</p>
-        <p><b>Дата:</b> {now}</p>
-        <p><b>Место:</b> Кайраккум</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-# Вывод кнопки слева
-st.markdown('<div class="button-container">', unsafe_allow_html=True)
-if st.button("Прочитать другое пожелание ✨"):
-    st.session_state.msg = random.choice(wishes)
-    st.rerun()
-st.markdown('</div>', unsafe_allow_html=True)
+    # Кнопка слева
+    st.markdown('<div class="left-btn">', unsafe_allow_html=True)
+    if st.button("Прочитать другое пожелание ✨"):
+        st.session_state.msg = random.choice(wishes)
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
