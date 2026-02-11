@@ -9,18 +9,16 @@ NAME = "Твое Имя"
 
 st.set_page_config(page_title="PAPA_OS: Party Edition", page_icon="🎂", layout="centered")
 
-# Функция создания матрицы с добавлением тортов и подарков
+# Функция создания матрицы
 def get_matrix_bg():
     cols = 50
     svg_txt = ""
-    # Праздничные элементы, которые будут лететь в потоке
     celebration_elements = ["0", "1", "🎂", "🎁", "🎉", "🔥"]
     
     for i in range(cols):
         x = i * (100 / cols)
         dur = random.uniform(3, 7)
         dly = random.uniform(0, 5)
-        # Смешиваем цифры и праздничные эмодзи
         chars = "".join(random.choice(celebration_elements) for _ in range(15))
         
         svg_txt += f"""
@@ -34,7 +32,7 @@ def get_matrix_bg():
 
 matrix_data = get_matrix_bg()
 
-# CSS Стили с праздничными акцентами
+# CSS Стили
 st.markdown(f"""
 <style>
     .stApp {{
@@ -73,6 +71,8 @@ st.markdown(f"""
         font-size: 20px !important;
         font-weight: bold;
         border-radius: 10px;
+        display: block;
+        margin: 0 auto;
     }}
     .stButton>button:hover {{
         background-color: #00ff41 !important;
@@ -84,7 +84,6 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# Управление этапами
 if 'step' not in st.session_state:
     st.session_state.step = 'start'
 
@@ -125,10 +124,9 @@ elif st.session_state.step == 'loading':
     st.session_state.step = 'final'
     st.rerun()
 
-# --- ЭТАП 3: ФИНАЛ (КОНФЕТТИ И ТОРТ) ---
+# --- ЭТАП 3: ФИНАЛ ---
 elif st.session_state.step == 'final':
-    # ЭФФЕКТ КОНФЕТТИ
-    st.balloons() 
+    # ЗДЕСЬ БЫЛИ ШАРИКИ (st.balloons), ТЕПЕРЬ ИХ НЕТ
     
     st.markdown("<h1 class='birthday-header' style='text-align:center;'>С ДНЕМ РОЖДЕНИЯ! 🎂</h1>", unsafe_allow_html=True)
     
