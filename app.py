@@ -4,53 +4,69 @@ import datetime
 import random
 
 # --- ВПИШИ СВОЕ ИМЯ ЗДЕСЬ ---
-NAME = "Твое Имя" 
+NAME = "Твоего сына" 
 # ---------------------------
 
-st.set_page_config(page_title="С Днем Рождения, Папа!", page_icon="💌", layout="centered")
+st.set_page_config(page_title="С Днем Рождения, Папа!", page_icon="❤️", layout="centered")
 
-# CSS для праздничного оформления
+# CSS для анимации и стилизации
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;700&display=swap');
 
     .stApp {
-        background: linear-gradient(135deg, #fceeb5 0%, #f9dede 100%);
+        background: linear-gradient(135deg, #fff5f5 0%, #f0f4ff 100%);
     }
 
-    /* Стиль открытки на первом экране */
-    .envelope {
+    /* Стиль конверта-кнопки */
+    .envelope-btn {
         background: #ffffff;
-        padding: 60px 40px;
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        padding: 50px 20px;
+        border-radius: 25px;
+        box-shadow: 0 15px 45px rgba(255, 107, 107, 0.2);
         text-align: center;
-        border: 4px double #ffadad;
+        border: 3px dashed #ffadad;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         cursor: pointer;
-        transition: transform 0.3s ease;
-        margin-top: 50px;
+        margin: 50px auto;
+        max-width: 500px;
     }
 
-    .envelope:hover {
-        transform: scale(1.02);
+    .envelope-btn:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 25px 50px rgba(255, 107, 107, 0.3);
+        border-style: solid;
+        background: #fffafa;
     }
 
     .main-title {
         font-family: 'Pacifico', cursive;
         color: #ff6b6b;
-        font-size: 3.5rem;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        font-size: 3rem;
+        margin: 20px 0;
     }
 
-    /* Стиль финальной карточки */
+    .instruction {
+        font-family: 'Roboto', sans-serif;
+        color: #aaa;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* Финальная карточка */
     .wish-card {
         background: white;
         padding: 40px;
         border-radius: 30px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         border: none;
-        margin-top: 30px;
+        animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .wish-text {
@@ -58,21 +74,29 @@ st.markdown("""
         font-size: 1.4rem;
         color: #444;
         line-height: 1.6;
-        padding: 20px;
-        border-left: 5px solid #ffadad;
-        background: #fffafa;
-        border-radius: 10px;
+        padding: 25px;
+        background: #fff9f9;
+        border-radius: 15px;
+        border-left: 6px solid #ff6b6b;
     }
 
+    /* Скрываем стандартную кнопку Streamlit, делая её прозрачной поверх конверта */
     .stButton>button {
-        background: #ff6b6b !important;
-        color: white !important;
-        border: none !important;
-        padding: 12px 25px !important;
-        border-radius: 25px !important;
-        font-size: 18px !important;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        margin-top: 20px;
+        height: 100%;
+        opacity: 0;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    .button-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     header, footer {visibility: hidden;}
@@ -82,28 +106,29 @@ st.markdown("""
 if 'opened' not in st.session_state:
     st.session_state.opened = False
 
-# --- ЭТАП 1: ЗАКРЫТАЯ ОТКРЫТКА ---
+# --- ЭТАП 1: КОНВЕРТ (КНОПКА) ---
 if not st.session_state.opened:
-    st.markdown(f"""
-    <div class="envelope">
-        <div style="font-size: 80px;">✉️</div>
-        <h1 class="main-title">С Днём Рождения, Папа!</h1>
-        <p style="color: #888; font-family: 'Roboto'; font-size: 1.1rem;">
-            Тебе пришло персональное поздравление.<br>Нажми на кнопку ниже, чтобы открыть его.
-        </p>
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Обертка, которая превращает всё внутри в визуальный конверт
+    st.markdown("""
+    <div class="button-container">
+        <div class="envelope-btn">
+            <div style="font-size: 100px; margin-bottom: 10px;">📩</div>
+            <h1 class="main-title">С Днём Рождения, Папа!</h1>
+            <p class="instruction">Нажми на конверт, чтобы открыть</p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    st.write("")
-    if st.button("ОТКРЫТЬ ОТКРЫТКУ 🔓"):
-        with st.spinner('Открываем...'):
-            time.sleep(1)
-            st.session_state.opened = True
-            st.rerun()
+    # Невидимая кнопка поверх всего контейнера
+    if st.button("Открыть"):
+        st.session_state.opened = True
+        st.rerun()
 
-# --- ЭТАП 2: РАСКРЫТАЯ ОТКРЫТКА ---
+# --- ЭТАП 2: ОТКРЫТОЕ ПОЗДРАВЛЕНИЕ ---
 else:
-    # Праздничные эффекты
+    # Выстрел конфетти и шаров с двух сторон
     st.balloons()
     
     wishes = [
@@ -121,18 +146,19 @@ else:
 
     st.markdown(f"""
     <div class="wish-card">
-        <h1 style="font-family: 'Pacifico'; color: #ff6b6b; text-align: center;">Для тебя, папа! ❤️</h1>
+        <h1 style="font-family: 'Pacifico'; color: #ff6b6b; text-align: center; font-size: 3rem;">Для тебя! ❤️</h1>
         <div class="wish-text">
             {st.session_state.current_wish}
         </div>
-        <div style="margin-top: 30px; font-family: 'Roboto'; border-top: 1px solid #eee; pt-3">
-            <p style="margin-top: 15px;"><b>От кого:</b> {NAME}</p>
+        <div style="margin-top: 30px; font-family: 'Roboto'; border-top: 1px solid #eee; padding-top: 20px;">
+            <p><b>От кого:</b> {NAME}</p>
             <p><b>Дата:</b> {now}</p>
             <p><b>Место:</b> Кайраккум</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    if st.button("ПРОЧИТАТЬ ДРУГОЕ ПОЖЕЛАНИЕ ✨"):
+    # Кнопка для смены пожелания (уже обычная, внизу)
+    if st.button("Прочитать другое пожелание ✨"):
         st.session_state.current_wish = random.choice(wishes)
         st.rerun()
