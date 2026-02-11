@@ -7,134 +7,135 @@ import random
 NAME = "Твое Имя" 
 # ---------------------------
 
-st.set_page_config(page_title="PAPA_OS: Private Access", page_icon="📟", layout="centered")
+st.set_page_config(page_title="С Днем Рождения, Папа!", page_icon="🎂", layout="centered")
 
-# Функция создания матрицы
-def get_matrix_bg():
-    cols = 60
-    svg_txt = ""
-    for i in range(cols):
-        x = i * (100 / cols)
-        dur = random.uniform(2, 6)
-        dly = random.uniform(0, 5)
-        chars = "".join(random.choice(["0", "1"]) for _ in range(25))
-        svg_txt += f'<text x="{x}%" y="-10%" fill="%2300ff41" font-family="monospace" font-size="22" opacity="0.25" style="writing-mode: tb; glyph-orientation-vertical: 0;">{chars}<animate attributeName="y" from="-50%" to="110%" dur="{dur}s" begin="-{dly}s" repeatCount="indefinite" /></text>'
-    svg = f'<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">{svg_txt}</svg>'
-    return svg.replace('"', "'").replace("\n", "")
-
-matrix_data = get_matrix_bg()
-
-# CSS Стили
-st.markdown(f"""
+# CSS для праздничного оформления
+st.markdown("""
 <style>
-    .stApp {{
-        background-color: #000000;
-        background-image: url("data:image/svg+xml;utf8,{matrix_data}");
-        background-size: cover;
-    }}
-    .wish-card, .login-card {{
-        position: relative;
-        z-index: 100;
-        border: 2px solid #00ff41;
+    /* Праздничный фон */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    /* Стиль карточки */
+    .main-card {
+        background-color: white;
         padding: 40px;
-        border-radius: 15px;
-        background-color: rgba(0, 0, 0, 0.95);
-        box-shadow: 0 0 50px rgba(0, 255, 65, 0.4);
-        margin-top: 100px;
+        border-radius: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         text-align: center;
-    }}
-    .terminal-text {{
-        color: #00ff41;
-        font-family: 'Courier New', monospace;
-        text-shadow: 0 0 10px #00ff41;
-    }}
-    .stButton>button {{
-        color: #00ff41 !important;
-        border: 2px solid #00ff41 !important;
-        background-color: transparent !important;
-        box-shadow: 0 0 15px #00ff41;
-        padding: 10px 30px !important;
-        font-family: 'Courier New', monospace;
-        font-size: 20px !important;
-        font-weight: bold;
-    }}
-    .stButton>button:hover {{
-        background-color: #00ff41 !important;
-        color: black !important;
-        box-shadow: 0 0 40px #00ff41;
-    }}
-    header, footer {{visibility: hidden;}}
+        border: none;
+        margin-top: 50px;
+    }
+
+    h1 {
+        color: #2d3436;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 800;
+    }
+
+    .wish-text {
+        font-size: 1.3rem;
+        color: #636e72;
+        line-height: 1.6;
+        font-style: italic;
+        margin: 20px 0;
+    }
+
+    .info-text {
+        color: #b2bec3;
+        font-size: 0.9rem;
+        margin-top: 30px;
+    }
+
+    /* Кнопка */
+    .stButton>button {
+        background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%) !important;
+        color: white !important;
+        border: none !important;
+        padding: 15px 30px !important;
+        border-radius: 50px !important;
+        font-weight: bold !important;
+        transition: all 0.3s ease !important;
+        width: 100%;
+    }
+
+    .stButton>button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(37, 117, 252, 0.3);
+    }
+
+    header, footer {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# Управление этапами (session_state)
 if 'step' not in st.session_state:
     st.session_state.step = 'start'
 
-# --- ЭТАП 1: КНОПКА ВХОДА ---
+# --- ЭТАП 1: ПРИВЕТСТВИЕ ---
 if st.session_state.step == 'start':
     st.markdown("""
-    <div class="login-card">
-        <h1 class="terminal-text">СИСТЕМА ЗАБЛОКИРОВАНА</h1>
-        <p class="terminal-text">Обнаружен секретный архив: <b>ДЕНЬ РОЖДЕНИЯ ПАПЫ</b></p>
-        <p class="terminal-text">Требуется подтверждение личности...</p>
+    <div class="main-card">
+        <h1 style="font-size: 50px;">🎁</h1>
+        <h1>Папа, у меня есть кое-что для тебя!</h1>
+        <p style="color: #636e72; font-size: 1.2rem;">Я подготовил небольшой сюрприз в честь твоего дня рождения.</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.write("")
-    if st.button("ПОЛУЧИТЬ ДОСТУП"):
+    if st.button("ОТКРЫТЬ ПОДАРОК"):
         st.session_state.step = 'loading'
         st.rerun()
 
-# --- ЭТАП 2: ЗАГРУЗКА ---
+# --- ЭТАП 2: КРАСИВОЕ ОЖИДАНИЕ ---
 elif st.session_state.step == 'loading':
-    st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-    st.markdown("<h2 class='terminal-text'>ВЗЛОМ СИСТЕМЫ...</h2>", unsafe_allow_html=True)
-    bar = st.progress(0)
-    status = st.empty()
-    logs = ["Подключение к серверу...", "Обход защиты...", "Загрузка поздравлений...", "Успешно!"]
+    st.markdown("<div class='main-card'>", unsafe_allow_html=True)
+    st.markdown("<h2>Готовим поздравление...</h2>", unsafe_allow_html=True)
     
-    for i, log in enumerate(logs):
-        status.markdown(f"<p class='terminal-text'>[LOG]: {log}</p>", unsafe_allow_html=True)
-        bar.progress((i + 1) * 25)
-        time.sleep(0.8)
+    # Красивый индикатор
+    progress_bar = st.progress(0)
+    for percent_complete in range(100):
+        time.sleep(0.02)
+        progress_bar.progress(percent_complete + 1)
     
     st.session_state.step = 'final'
     st.rerun()
 
-# --- ЭТАП 3: ФИНАЛ ---
+# --- ЭТАП 3: ФИНАЛЬНАЯ ОТКРЫТКА ---
 elif st.session_state.step == 'final':
-    st.markdown("<h1 class='terminal-text' style='text-align:center;'>🔓 ДОСТУП РАЗРЕШЕН</h1>", unsafe_allow_html=True)
+    # Запускаем праздник!
+    st.balloons()
+    st.snow() # Добавим немного "волшебства" в виде летящих снежинок/звездочек
     
     wishes = [
-        "Дорогой папа, желаю тебе крепкого и несокрушимого здоровья! Ты — наша главная опора. Пусть твоя энергия никогда не иссякает!",
-        "Желаю огромного успеха во всех делах! Пусть любые трудности отступают перед твоей мудростью. Счастья и только добрых новостей!",
-        "С днем рождения! Желаю, чтобы в жизни всегда был 'зеленый свет' для твоих целей. Мы тебя очень любим и гордимся тобой!",
-        "Пусть каждый новый год приносит новые силы и радость. Желаю душевного спокойствия, удачи и побольше времени на отдых!",
-        "Самый лучший отец, с праздником! Пусть наш дом всегда будет для тебя местом силы и уюта. Здоровья тебе на долгие годы!"
+        "Дорогой папа, поздравляю тебя с днем рождения! Желаю тебе самого крепкого здоровья, долгих лет жизни и чтобы каждый день приносил только радость. Ты — лучший пример для меня!",
+        "С днем рождения, папа! Пусть твоя жизнь будет наполнена светом и теплом. Желаю удачи во всех делах, бодрости духа и отличного настроения в нашем любимом Кайраккуме!",
+        "Папа, спасибо тебе за твою мудрость и поддержку. Желаю тебе финансового благополучия, душевного спокойствия и чтобы все твои мечты обязательно сбывались!",
+        "Поздравляю! Желаю тебе всегда оставаться таким же сильным и добрым. Пусть здоровье никогда не подводит, а дом всегда будет полной чашей. Мы тебя любим!",
+        "Самый лучший папа, с твоим днем! Желаю тебе побольше поводов для улыбок, приятных сюрпризов от жизни и верных друзей рядом. С праздником!"
     ]
 
     if 'msg' not in st.session_state:
         st.session_state.msg = random.choice(wishes)
 
-    tz = datetime.timezone(datetime.timedelta(hours=5))
-    now = datetime.datetime.now(tz).strftime("%d.%m.%Y")
+    now = datetime.datetime.now().strftime("%d.%m.%Y")
 
     st.markdown(f"""
-    <div class="wish-card">
-        <h2 style="color:#00ff41; text-align:center;">С ДНЕМ РОЖДЕНИЯ! 🎉</h2>
-        <div class="terminal-text" style="text-align: left;">
-            <p><b>СТАТУС:</b> САМЫЙ ЛУЧШИЙ ПАПА</p>
-            <p><b>ЛОКАЦИЯ:</b> КАЙРАККУМ</p>
-            <p><b>ДАТА:</b> {now}</p>
-            <p>-------------------------------------------</p>
-            <p style="font-size: 1.1em; line-height: 1.5;">{st.session_state.msg}</p>
-            <p>-------------------------------------------</p>
-            <p><b>АВТОР:</b> {NAME}</p>
+    <div class="main-card">
+        <h1 style="color: #6a11cb;">С Днём Рождения! 🎂</h1>
+        <p class="wish-text">"{st.session_state.msg}"</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        <div style="text-align: left; color: #2d3436;">
+            <p><b>Для кого:</b> Любимому папе</p>
+            <p><b>От кого:</b> {NAME}</p>
+            <p><b>Дата:</b> {now}</p>
+            <p><b>Место:</b> Кайраккум</p>
         </div>
+        <p class="info-text">Сделано с любовью на Python специально для тебя ❤️</p>
     </div>
     """, unsafe_allow_html=True)
     
-    if st.button("ЕЩЕ ОДНО ПОЖЕЛАНИЕ"):
+    st.write("")
+    if st.button("ПОЛУЧИТЬ ЕЩЕ ОДНО ПОЖЕЛАНИЕ ✨"):
         st.session_state.msg = random.choice(wishes)
         st.rerun()
