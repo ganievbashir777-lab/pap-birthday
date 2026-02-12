@@ -4,7 +4,7 @@ import datetime
 import random
 
 # --- ВПИШИ СВОЕ ИМЯ ЗДЕСЬ ---
-NAME = "Твое Имя" 
+NAME = "ОТ БАШИРА" 
 # ---------------------------
 
 st.set_page_config(page_title="PAPA_OS: Hack Edition", page_icon="📟", layout="centered")
